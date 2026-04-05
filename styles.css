@@ -1,0 +1,71 @@
+:root { --bg:#fafafa; --card:#ffffff; --ink:#222; --muted:#666; --accent:#3a86ff; --ok:#2a9d8f; --ng:#e76f51; --grid:#eef0f4; --holiday:#ffefef; --holidayText:#b00020; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+         background:var(--bg); color:var(--ink); margin:0; padding:24px; }
+  h1 { font-size: 20px; margin: 0 0 16px; }
+  .container { max-width: 980px; margin: 0 auto; display: grid; gap: 16px; }
+  .card { background: var(--card); border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); padding: 16px; }
+  label { font-weight: 600; display:block; margin-top: 10px; }
+  input[type="number"], input[type="date"] { width: 100%; box-sizing: border-box; padding: 10px; border:1px solid #ddd; border-radius: 8px; font-size: 15px; }
+  .row { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn { display:inline-block; padding:9px 13px; border-radius: 8px; border:1px solid #ddd; background:#fff; cursor:pointer; font-weight:600; }
+  .btn.primary { background: var(--accent); color:#fff; border-color: transparent; }
+  .btn.small { padding:6px 10px; font-size: 12px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 12px; }
+  .pill { display:inline-block; padding:4px 8px; border-radius:999px; background:#f1f5ff; color:#334; font-weight:600; }
+  .calendar-wrap { display:grid; grid-template-columns: 1fr; gap: 16px; }
+  .month { border:1px solid var(--grid); border-radius: 10px; overflow:hidden; background:#fff; }
+  .month h3 { margin:0; padding:10px 12px; background:#f8fafc; border-bottom:1px solid var(--grid); font-size: 14px; }
+  .wk { display:grid; grid-template-columns: repeat(7, 1fr); background:#fbfbfd; border-bottom:1px solid var(--grid); }
+  .wk div { padding:8px; text-align:center; font-size:12px; color:#555; }
+  .grid { display:grid; grid-template-columns: repeat(7, 1fr); }
+  .cell { border-right:1px solid var(--grid); border-bottom:1px solid var(--grid); min-height:74px; padding:6px; position:relative; }
+  .cell:nth-child(7n) { border-right:none; }
+  .cell.disabled { background:#fafafa; color:#bbb; }
+  .d { font-weight:700; font-size: 13px; }
+  .sun .d { color:#d62828; }
+  .sat .d { color:#2a9d8f; }
+  .chk { position:absolute; right:6px; bottom:6px; }
+  .hname { position:absolute; left:6px; bottom:6px; font-size:11px; color: var(--holidayText); }
+  .holiday { background: var(--holiday); }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px;}
+  th, td { padding: 8px 10px; border-bottom: 1px solid #eee; text-align: left; }
+  .good { color: var(--ok); font-weight: 700; }
+  .bad { color: var(--ng); font-weight: 700; }
+  .helper { font-size:12px; color:var(--muted); margin-top:4px; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .note { background:#fff7e6; border:1px solid #fcd48a; padding:8px 10px; border-radius:8px; font-size:12px; }
+
+  .tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9999;
+  }
+  .tutorial-overlay.show { display: flex; }
+  .tutorial-modal {
+    width: min(720px, 100%);
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.2);
+    padding: 20px;
+  }
+  .tutorial-modal h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+  .tutorial-steps {
+    margin: 12px 0 0 20px;
+    line-height: 1.9;
+  }
+  .tutorial-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }

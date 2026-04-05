@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>通勤 定期 vs. 通常切符 試算ツール（祝日対応カレンダー）</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="container">
+  <h1>通勤：定期 vs. 通常切符 試算ツール（祝日対応・1ヶ月定期）</h1>
+  <div class="card">
+    <strong>使い方</strong>
+    <ol style="margin:10px 0 0 20px; line-height:1.8;">
+      <li><strong>定期券料金</strong>と<strong>通常切符の往復料金</strong>を入力します。毎回同じ金額を使うなら、<strong>「この金額を初期値として保存」</strong>を押します。</li>
+      <li><strong>定期券の購入日（開始日）</strong>を入力します。</li>
+      <li><strong>「購入日から1カ月のカレンダーを表示」</strong>を押します。</li>
+      <li>表示されたカレンダーで、<strong>出勤日にチェック</strong>を入れます。<br><span class="small muted">必要なら「定期期間の平日すべて選択（祝日除外）」を使えます。</span></li>
+      <li>最後に<strong>「計算する」</strong>を押すと、<strong>定期券と通常切符のどちらが得か</strong>が表示されます。</li>
+    </ol>
+  </div>
+
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>定期券料金（1ヶ月）<span class="muted small">（円）</span></label>
+        <input id="passPrice" type="number" min="0" step="1" placeholder="例: 16800" />
+      </div>
+      <div>
+        <label>通常切符の往復料金<span class="muted small">（円／1日）</span></label>
+        <input id="roundTripFare" type="number" min="0" step="1" placeholder="例: 640" />
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:8px">
+      <button class="btn small" id="saveDefaultsBtn">この金額を初期値として保存</button>
+      <button class="btn small" id="clearDefaultsBtn">保存した初期値を削除</button>
+      <span class="small muted" id="defaultsStatus">初期値はまだ保存されていません</span>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>定期券 購入日（開始日）</label>
+        <input id="purchaseDate" type="date" />
+        <div class="helper">※ 有効期限は <code>購入日の翌月同日前日まで</code>（例：4/15開始 → 5/14まで）</div>
+      </div>
+      <div>
+        <label>カレンダー生成</label>
+        <div class="toolbar">
+          <button class="btn primary" id="buildCalendarBtn">購入日から1カ月のカレンダーを表示</button>
+          <span class="small muted">（生成後に祝日表示＆チェック可能になります）</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="calendarCard" style="display:none">
+    <div class="toolbar" style="margin-bottom:8px">
+      <span class="small muted">定期の有効期間：<span id="passTermPreview">—</span></span>
+      <span class="small muted">／ 損益分岐（定期内必要日数）：<span id="breakevenPreview">—</span></span>
+    </div>
+
+    <div class="note" style="margin-bottom:8px">
+      祝日は赤系の背景と名称を表示します。<strong>一括選択</strong>ボタンは「祝日を除外」して選べます（手動で祝日にもチェック可能）。 必要に応じて出勤日を調整してください。
+    </div>
+
+    <div class="toolbar" style="margin-bottom:8px">
+      <button class="btn small" id="selectAllWeekdays">定期期間の平日すべて選択（祝日除外）</button>
+            <button class="btn small" id="clearAll">選択を全解除</button>
+    </div>
+
+    <div class="calendar-wrap" id="calendarWrap"></div>
+    <div class="helper" id="selectedInfo" style="margin-top:6px;">選択済み：0 日（定期内 0）</div>
+  </div>
+
+  <div class="card">
+    <div class="helper" style="margin-bottom:8px;">手順 1〜4 を終えてから「計算する」を押してください。</div>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <button class="btn primary" id="calcBtn">計算する</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="result" id="resultSummary">購入日を入れてカレンダーを生成し、出勤日にチェックを入れてから「計算する」を押してください。</div>
+    <table id="detailTable" style="display:none">
+      <thead>
+        <tr><th>項目</th><th>数値</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="helper">※ 端数は円単位に四捨五入しています。</div>
+  </div>
+
+  <div class="helper">v1.3（日本の祝日表示・一括選択時に祝日除外）— 作成: ChatGPT</div>
+</div>
+
+<div class="tutorial-overlay" id="tutorialOverlay">
+  <div class="tutorial-modal" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+    <h2 id="tutorialTitle">はじめて使う方へ</h2>
+    <div class="small muted">この案内は初回起動時のみ表示されます。</div>
+    <ol class="tutorial-steps">
+      <li><strong>定期券料金</strong>と<strong>通常切符の往復料金</strong>を入力します。</li>
+      <li>毎回同じ金額なら、<strong>「この金額を初期値として保存」</strong>を押します。</li>
+      <li><strong>定期券の購入日</strong>を入力して、<strong>「購入日から1カ月のカレンダーを表示」</strong>を押します。</li>
+      <li>表示されたカレンダーで<strong>出勤日をチェック</strong>します。必要なら一括選択後に微調整してください。</li>
+      <li>最後に<strong>「計算する」</strong>を押して、どちらが得か確認します。</li>
+    </ol>
+    <div class="tutorial-actions">
+      <button class="btn" id="tutorialShowAgainBtn">あとでまた見る</button>
+      <button class="btn primary" id="tutorialCloseBtn">使い始める</button>
+    </div>
+  </div>
+</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
