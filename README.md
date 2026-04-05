@@ -1,6 +1,8 @@
 # commuter-pass-calculator
 
 通勤の **1か月定期券** と **通常切符（往復）** のどちらが得かを試算する、シンプルな静的Webツールです。
+公開サイト：
+http://bomuson.main.jp/commuter-pass-calculator/docs/
 
 ## 機能
 - 定期券料金と通常切符の往復料金を入力
